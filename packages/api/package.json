@@ -1,0 +1,25 @@
+{
+  "name": "@effect-api-example/api",
+  "version": "0.0.1",
+  "description": "Api definition",
+  "scripts": {
+    "build": "tsc"
+  },
+  "exports": {
+    "./definition": {
+      "types": "./src/definition/index.ts",
+      "default": "./dist/definition/index.js"
+    }
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.23",
+    "typescript": "5.9.2",
+    "@effect-api-example/typescript-config": "workspace:*"
+  },
+  "dependencies": {
+    "@effect-api-example/shared": "workspace:*",
+    "@effect/platform": "0.94.0",
+    "@effect/rpc": "0.72.1",
+    "effect": "3.19.13"
+  }
+}

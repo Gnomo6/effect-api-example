@@ -1,135 +1,163 @@
-# Turborepo starter
+# Effect API Example
 
-This Turborepo starter is maintained by the Turborepo core team.
+A monorepo example demonstrating how to build a type-safe API using [Effect](https://effect.website/), [@effect/platform](https://effect.website/docs/platform/http-api/introduction), and [Drizzle ORM](https://orm.drizzle.team/).
 
-## Using this example
-
-Run the following command:
-
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## Repository Structure
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+effect-api-example/
+├── apps/
+│   └── server/                 # Bun HTTP server
+│       ├── src/
+│       │   ├── api/
+│       │   │   ├── groups/     # API endpoint handlers
+│       │   │   └── middleware/ # Auth middleware implementations
+│       │   ├── db/
+│       │   │   ├── schema/     # Drizzle table schemas
+│       │   │   ├── migrations/ # Database migrations
+│       │   │   └── SqlLive.ts  # Database layer
+│       │   └── main.ts         # Server entrypoint
+│       ├── scripts/
+│       │   ├── seed.ts         # Database seeding script
+│       │   └── client-example.ts # Example API client
+│       ├── docker-compose.yml  # PostgreSQL container
+│       └── drizzle.config.ts   # Drizzle Kit configuration
+├── packages/
+│   ├── api/                    # API definition (schemas, endpoints, middleware)
+│   │   └── src/definition/
+│   │       ├── groups/         # Endpoint group definitions
+│   │       ├── middleware/     # Middleware definitions
+│   │       └── WarpApi.ts      # Main API definition
+│   ├── shared/                 # Shared types and utilities
+│   │   └── src/index.ts        # Branded types, schemas, helpers
+│   ├── eslint-config/          # Shared ESLint configuration
+│   └── typescript-config/      # Shared TypeScript configuration
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## Prerequisites
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+- [Node.js](https://nodejs.org/) (v20+)
+- [pnpm](https://pnpm.io/) (v9+)
+- [Bun](https://bun.sh/) (for running the server)
+- [Docker](https://www.docker.com/) (for PostgreSQL)
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+## Installation
 
-### Develop
+```bash
+# Clone the repository
+git clone <repo-url>
+cd effect-api-example
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+# Install dependencies
+pnpm install
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## Running the Project
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+### 1. Start the Database
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+```bash
+cd apps/server
+docker compose up -d
 ```
 
-### Remote Caching
+This starts a PostgreSQL container with:
+- Host: `localhost`
+- Port: `5432`
+- Database: `postgres`
+- User: `postgres`
+- Password: `postgres_password`
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+### 2. Configure Environment
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+Copy the example environment file:
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```bash
+cd apps/server
+cp .env.example .env
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+The `.env` file should contain:
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=postgres
+DB_USERNAME=postgres
+DB_PASSWORD=postgres_password
 ```
 
-## Useful Links
+### 3. Run Database Migrations
 
-Learn more about the power of Turborepo:
+```bash
+pnpm --filter @effect-api-example/server db:migrate
+```
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+### 4. Seed the Database (Optional)
+
+Populate the database with 1000 sample employees:
+
+```bash
+pnpm --filter @effect-api-example/server db:seed
+```
+
+### 5. Start the Server
+
+```bash
+pnpm --filter @effect-api-example/server dev
+```
+
+The server runs on `http://localhost:9277` by default.
+
+### 6. Test the API (Optional)
+
+Run the example client to test the API:
+
+```bash
+pnpm --filter @effect-api-example/server client:example
+```
+
+## Available Scripts
+
+### Root
+
+| Script | Description |
+|--------|-------------|
+| `pnpm build` | Build all packages |
+| `pnpm dev` | Start development mode for all packages |
+| `pnpm lint` | Lint all packages |
+| `pnpm format` | Format code with Prettier |
+
+### Server (`apps/server`)
+
+| Script | Description |
+|--------|-------------|
+| `pnpm dev` | Start server in hot-reload mode |
+| `pnpm build` | Build server for production |
+| `pnpm start` | Run production build |
+| `pnpm db:generate` | Generate new migrations |
+| `pnpm db:migrate` | Apply migrations |
+| `pnpm db:seed` | Seed database with sample data |
+| `pnpm client:example` | Run example API client |
+
+## API Endpoints
+
+### Health
+
+- `GET /health` - Health check endpoint
+
+### Employees
+
+All employee endpoints require an `x-api-key` header.
+
+- `GET /employees` - List employees with pagination
+  - Query params: `limit`, `afterId`, `beforeId`, `types[]`
+- `GET /employees/:id` - Get employee by tag
+
+## Tech Stack
+
+- **Runtime**: [Bun](https://bun.sh/)
+- **Framework**: [@effect/platform](https://effect.website/docs/platform/http-api/introduction) HTTP API
+- **Database**: PostgreSQL with [Drizzle ORM](https://orm.drizzle.team/)
+- **Type Safety**: [Effect Schema](https://effect.website/docs/schema/introduction)
+- **Monorepo**: [Turborepo](https://turbo.build/repo) with pnpm workspaces
