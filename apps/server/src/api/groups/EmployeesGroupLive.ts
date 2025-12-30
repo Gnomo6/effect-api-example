@@ -3,7 +3,7 @@ import { WarpApi, PublicEmployeeSchema, EmployeeNotFoundError, PublicEmployee } 
 import { EmployeeTag } from '@effect-api-example/shared'
 import * as PgDrizzle from '@effect/sql-drizzle/Pg'
 import { employees } from '../../db/schema/employees'
-import { eq, inArray, like, SQL } from 'drizzle-orm'
+import { and, asc, eq, gt, inArray, lt, SQL } from 'drizzle-orm'
 import { DateTime, Effect } from 'effect'
 
 export const EmployeesGroupLive = HttpApiBuilder.group(WarpApi, 'Employees', (handlers) =>
@@ -11,54 +11,39 @@ export const EmployeesGroupLive = HttpApiBuilder.group(WarpApi, 'Employees', (ha
         return handlers
             .handle('list', ({ urlParams: { types, limit, afterId, beforeId } }) =>
                 Effect.gen(function* () {
-                    const db = yield* PgDrizzle.PgDrizzle
+                    const drizzle = yield* PgDrizzle.PgDrizzle
 
-                    // Build where conditions
-                    const conditions: SQL[] = []
+                    const filters: SQL[] = []
 
                     if (types && types.length > 0) {
-                        conditions.push(inArray(employees.type, types))
+                        filters.push(inArray(employees.type, types))
                     }
-
-                    let query = db.select().from(employees).$dynamic()
-
-                    for (const condition of conditions) {
-                        query = query.where(condition)
-                    }
-
-                    const results = yield* query.pipe(
-                        Effect.catchAll((e) =>
-                            Effect.gen(function* () {
-                                yield* Effect.logError('Failed to list employees: ', e)
-                                return yield* Effect.fail(new HttpApiError.InternalServerError())
-                            }),
-                        ),
-                    )
-
-                    // Sort by tag for consistent pagination
-                    const sortedEmployees = [...results].sort((a, b) => a.tag.localeCompare(b.tag))
-
-                    // Apply cursor-based pagination in memory
-                    let startIndex = 0
-                    let endIndex = sortedEmployees.length
 
                     if (afterId) {
-                        const cursorIndex = sortedEmployees.findIndex((e) => e.tag === afterId)
-                        if (cursorIndex !== -1) {
-                            startIndex = cursorIndex + 1
-                        }
+                        filters.push(gt(employees.tag, afterId))
                     }
 
                     if (beforeId) {
-                        const cursorIndex = sortedEmployees.findIndex((e) => e.tag === beforeId)
-                        if (cursorIndex !== -1) {
-                            endIndex = cursorIndex
-                        }
+                        filters.push(lt(employees.tag, beforeId))
                     }
 
-                    const sliced = sortedEmployees.slice(startIndex, endIndex)
-                    const pageData = sliced.slice(0, limit)
-                    const hasMore = sliced.length > limit
+                    const results = yield* drizzle
+                        .select()
+                        .from(employees)
+                        .where(filters.length > 0 ? and(...filters) : undefined)
+                        .orderBy(asc(employees.tag))
+                        .limit(limit + 1)
+                        .pipe(
+                            Effect.catchAll((e) =>
+                                Effect.gen(function* () {
+                                    yield* Effect.logError('Failed to list employees: ', e)
+                                    return yield* Effect.fail(new HttpApiError.InternalServerError())
+                                }),
+                            ),
+                        )
+
+                    const hasMore = results.length > limit
+                    const pageData = results.slice(0, limit)
 
                     return {
                         hasMore,
